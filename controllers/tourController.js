@@ -40,7 +40,7 @@ exports.getAllTours = (req, res) => {
 
 exports.getTour = (req, res) => {
   const { id } = req.params;
-  const tour = tours.find((tour) => tour.id === id * 1);
+  const tour = tours.find((singleTour) => singleTour.id === id * 1);
   if (!tour) {
     return res.status(404).json({
       status: 'Fail',
@@ -57,11 +57,13 @@ exports.getTour = (req, res) => {
 
 exports.createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
+  // eslint-disable-next-line prefer-object-spread
   const newTour = Object.assign({ id: newId }, req.body);
   tours.push(newTour);
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
+    // eslint-disable-next-line no-unused-vars
     (err) => {
       res.status(201).json({
         status: 'Success',
