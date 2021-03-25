@@ -18,6 +18,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
+    role: req.body.role,
+    photo: req.body.photo,
   });
   const token = createToken(newUser._id);
 
@@ -79,5 +81,21 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   // Grant access to protected route
+  req.user = currentUser;
   next();
 });
+
+// eslint-disable-next-line arrow-body-style
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    console.log(roles);
+    console.log(req.body);
+    //roles is an array, access to it due to closure
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have permission to perform this action', 403)
+      );
+    }
+    next();
+  };
+};
