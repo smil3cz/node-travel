@@ -1,2 +1,7 @@
 # node-travel
-Project to learn how node/express work with MongoDB
+Project to practice node/express work with MongoDB
+
+- REST API
+- Mongo DB
+- Mongoose
+- JWT security
